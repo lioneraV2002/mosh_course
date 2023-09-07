@@ -9,7 +9,8 @@ from django.contrib import admin
 
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth import get_user_model
-from .models import Good
+from .models import Good, UserGoodRelation
+
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 
@@ -70,3 +71,12 @@ class GoodAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Good, GoodAdmin)
+
+
+
+class UserGoodRelationAdmin(admin.ModelAdmin):
+    list_display = ('user', 'good', 'count')
+    list_filter = ('user', 'good')
+    search_fields = ('user__email', 'good__name')
+
+admin.site.register(UserGoodRelation, UserGoodRelationAdmin)
