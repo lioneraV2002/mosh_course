@@ -9,10 +9,12 @@ from django.contrib import admin
 
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth import get_user_model
-from .models import User,Good
+from .models import Good
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 
-# User = get_user_model()
+
+# get the current user active
+User = get_user_model()
 
 
 # @admin.register(User)
