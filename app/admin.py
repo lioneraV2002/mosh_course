@@ -9,8 +9,8 @@ from django.contrib import admin
 
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth import get_user_model
-from .models import User
-from .forms import *
+from .models import User,Good
+from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 # User = get_user_model()
 
@@ -21,8 +21,8 @@ class CustomUserAdmin(UserAdmin):
     form = CustomUserChangeForm
     model = User
     
-    list_display = ('email', 'is_staff', 'is_active',)
-    list_filter = ('email', 'is_staff', 'is_active',)
+    list_display = ['email','first_name','last_name', 'is_staff', 'is_active']
+    list_filter = ['email', 'is_staff', 'is_active']
     fieldsets = [
         (
             None,
@@ -60,3 +60,11 @@ class CustomUserAdmin(UserAdmin):
     
 
 admin.site.register(User,CustomUserAdmin)
+
+
+
+class GoodAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name', 'price']
+
+
+admin.site.register(Good, GoodAdmin)
