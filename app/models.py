@@ -36,3 +36,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     def __str__(self) -> str:
         return self.email
+
+
+class Good(models.Model):
+    name = models.CharField(max_length=255)
+    price = models.IntegerField()
+
+    
