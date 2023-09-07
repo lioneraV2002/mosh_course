@@ -100,7 +100,7 @@ DATABASES = {
 
 
 # To tell Django to use a custom user model instead of the default. Add the following line of code to the settings.py
-AUTH_USER_MODEL = "app.User"
+AUTH_USER_MODEL = 'app.User'
 # app_name.your_customuser_model_name
 
 

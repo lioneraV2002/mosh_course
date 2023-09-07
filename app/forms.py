@@ -1,13 +1,13 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth import get_user_model
-
+from .models import User
 
 # To view our custom user models in the admin panel
 # we need to create forms.
 
 
 
-User = get_user_model()
+# User = get_user_model()
 
 
 class CustomUserCreationForm(UserCreationForm):

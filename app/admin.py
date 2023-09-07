@@ -9,14 +9,54 @@ from django.contrib import admin
 
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth import get_user_model
-
+from .models import User
 from .forms import *
 
-User = get_user_model()
+# User = get_user_model()
 
 
-@admin.register(User)
+# @admin.register(User)
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = User
+    
+    list_display = ('email', 'is_staff', 'is_active',)
+    list_filter = ('email', 'is_staff', 'is_active',)
+    fieldsets = [
+        (
+            None,
+            {
+                'fields': ['email', ('first_name', 'last_name'), 'last_login', 'date_joined'],
+            },
+        ),
+        (
+            'Advanced options',
+            {
+                'classes': ['collapse'],
+                'fields': ['password', 'is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'],
+            },
+        ),
+    ]
+    add_fieldsets = [
+        (
+            None,
+            {
+                'fields': ['email', ('first_name', 'last_name'), 'password1', 'password2'],
+            },
+        ),
+        (
+            'Advanced options',
+            {
+                'classes': ['collapse'],
+
+                'fields': ['is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'],
+            },
+        ),
+    ]
+    search_fields = ('email', 'first_name', 'last_name')
+    ordering = ('email', 'date_joined', 'last_login')
+
+    
+
+admin.site.register(User,CustomUserAdmin)
