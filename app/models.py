@@ -42,7 +42,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Good(models.Model):
     name = models.CharField(max_length=255)
     price = models.IntegerField()
-
+    def __str__(self) -> str:
+        return self.name
     
     
     
@@ -51,6 +52,11 @@ class UserGoodRelation(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     good = models.ForeignKey(Good, on_delete=models.CASCADE)
     count = models.IntegerField()
+
+    def is_available(self):
+        if self.count > 0:
+            return True
+        return False
 
     def save(self, *args, **kwargs):
         # Check if the related user and good exist, and create them if not

@@ -8,5 +8,5 @@ from . import views
 # URLConf module
 # should include this url conf in the main url configuration
 urlpatterns = [
-    path('hello/', view=views.say_hello)
+    path('hello/', view=views.say_hello)  
 ]

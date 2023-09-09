@@ -75,7 +75,7 @@ admin.site.register(Good, GoodAdmin)
 
 
 class UserGoodRelationAdmin(admin.ModelAdmin):
-    list_display = ('user', 'good', 'count')
+    list_display = ('user', 'good', 'count', 'is_available')
     list_filter = ('user', 'good')
     search_fields = ('user__email', 'good__name')
 
