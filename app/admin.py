@@ -11,7 +11,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth import get_user_model
 from .models import Good, UserGoodRelation
 
-from .forms.user_forms import CustomUserCreationForm, CustomUserChangeForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 
 # get the current user active
