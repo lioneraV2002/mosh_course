@@ -39,9 +39,13 @@ def calculate():
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
+        # print(request.POST)
+        print(form.errors)
+
         if form.is_valid():
             new_user = form.save()
             # login(request, new_user)
+            print(new_user)
             return redirect('login')
     else:
         form = RegistrationForm()
@@ -54,19 +58,28 @@ def register(request):
 # and checks whether it is valid or not.
 # if valid, it logs the user in and redirect them to the add_goods page
 # if not, then, an instance of the form is created, passed to the render method along with login.html file to be rendered with
+from django.contrib.auth import authenticate, login
+
 def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
+        
+        print(form.errors)
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
-            user = authenticate(request, email=email, password=password)
-            if user:
+            
+            # Correct way to authenticate user
+            user = authenticate(request, username=email, password=password)
+            
+            if user is not None:
                 login(request, user)
                 return redirect('add_goods')
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form})
+
+
 
 
 @login_required
@@ -79,19 +92,25 @@ def add_goods(request):
             count = form.cleaned_data['count']
             
             # Check if the user already has a UserGoodRelation for the selected good
-            user_good_relation, is_created = UserGoodRelation.objects.get_or_create(user=request.user, good=selected_good)
+            user_good_relation, is_created = UserGoodRelation.objects.get_or_create(user=request.user, good=selected_good, defaults={'count':0})
             
             # Update the count for the UserGoodRelation
-            user_good_relation.count += count
+            # i encountered an integrity error for the count field
+            if is_created:
+                user_good_relation.count = count
+            else:
+                user_good_relation.count += count
+            
             user_good_relation.save()
-       
+            
             # Redirect to the add goods page or any other page you prefer
             return redirect('add_goods')
     
     else:
         form = AddGoodsForm()
-    user_goods = UserGoodRelation.objects.get(user=request.user)
-    return render(request, 'add_goods.html', {'form': form, 'user_goods': user_goods})
+    all_goods = UserGoodRelation.objects.all()
+    user_goods = UserGoodRelation.objects.filter(user=request.user)
+    return render(request, 'add_goods.html', {'form': form, 'user_goods': user_goods, 'all_goods':all_goods})
 
 
 

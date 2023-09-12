@@ -60,10 +60,10 @@ class UserGoodRelation(models.Model):
 
     def save(self, *args, **kwargs):
         # Check if the related user and good exist, and create them if not
-        if not self.user_id: 
+        if not self.user: 
             random_password = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(9))
             random_email = f'user_{random.randint(1, 9999)}@example.com'
             self.user = User.objects.create_user(email=random_email,password=random_password)
-        if not self.good_id:
+        if not self.good:
             self.good = Good.objects.create(name='Default Good', price=random.randint(0,99999))
         super().save(*args, **kwargs)

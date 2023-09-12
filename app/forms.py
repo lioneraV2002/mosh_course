@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth import get_user_model
-# from .models import User
+from .models import User
 
 # To view our custom user models in the admin panel
 # we need to create forms.
@@ -26,7 +26,7 @@ class CustomUserChangeForm(UserChangeForm):
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import Good,UserGoodRelation, User
+from .models import *
 
 class RegistrationForm(UserCreationForm):
     class Meta:
@@ -41,8 +41,8 @@ class LoginForm(AuthenticationForm):
 class AddGoodsForm(forms.ModelForm):
     class Meta:
         model = UserGoodRelation
-        fields = ('good', 'count')
+        fields = ( 'good', 'count')
 
     def __init__(self, *args, **kwargs):
         super(AddGoodsForm, self).__init__(*args, **kwargs)
-        self.fields['good'].queryset = Good.objects.all()
+        self.fields['all_goods'].queryset = Good.objects.all()
