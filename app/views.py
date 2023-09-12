@@ -69,6 +69,7 @@ def user_login(request):
     return render(request, 'login.html', {'form': form})
 
 
+@login_required
 def add_goods(request):
     if request.method == 'POST':
         form = AddGoodsForm(request.POST)
@@ -89,7 +90,7 @@ def add_goods(request):
     
     else:
         form = AddGoodsForm()
-    user_goods = UserGoodRelation.objects.filter(user=request.user)
+    user_goods = UserGoodRelation.objects.get(user=request.user)
     return render(request, 'add_goods.html', {'form': form, 'user_goods': user_goods})
 
 
