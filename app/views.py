@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponse
 from .forms import *
-
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -82,7 +82,7 @@ def user_login(request):
 
 
 
-@login_required
+@login_required(login_url='login')
 def add_goods(request):
     if request.method == 'POST':
         # form = AddGoodsForm(request.POST)
