@@ -1,3 +1,4 @@
+from typing import Any
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth import get_user_model
 from .models import User
@@ -41,8 +42,5 @@ class LoginForm(AuthenticationForm):
 class AddGoodsForm(forms.ModelForm):
     class Meta:
         model = UserGoodRelation
-        fields = ( 'good', 'count')
+        fields = ('good', 'count')
 
-    def __init__(self, *args, **kwargs):
-        super(AddGoodsForm, self).__init__(*args, **kwargs)
-        self.fields['all_goods'].queryset = Good.objects.all()

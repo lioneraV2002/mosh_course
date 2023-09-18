@@ -39,7 +39,7 @@ def calculate():
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
-        # print(request.POST)
+        print(request.POST)
         print(form.errors)
 
         if form.is_valid():
@@ -64,19 +64,19 @@ def user_login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         
-        print(form.errors)
-        if form.is_valid():
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
+        email=request.POST.get('email')
+        password=request.POST.get('password')
+
+    #         # Correct way to authenticate user
+        user = authenticate(request, username=email, password=password)
             
-            # Correct way to authenticate user
-            user = authenticate(request, username=email, password=password)
-            
-            if user is not None:
-                login(request, user)
-                return redirect('add_goods')
+        if user is not None:
+            login(request, user)
+            return redirect('add_goods')
     else:
         form = LoginForm()
+    
+    
     return render(request, 'login.html', {'form': form})
 
 
@@ -85,32 +85,32 @@ def user_login(request):
 @login_required
 def add_goods(request):
     if request.method == 'POST':
-        form = AddGoodsForm(request.POST)
-        if form.is_valid():
-            # Get the selected good and count from the form
-            selected_good = form.cleaned_data['good']
-            count = form.cleaned_data['count']
-            
+        # form = AddGoodsForm(request.POST)
+        
+        selected_good = Good.objects.get(id=request.POST.get('good'))
+        count = int(request.POST.get('count'))
+        
             # Check if the user already has a UserGoodRelation for the selected good
-            user_good_relation, is_created = UserGoodRelation.objects.get_or_create(user=request.user, good=selected_good, defaults={'count':0})
+        
+        user_good_relation, is_created = UserGoodRelation.objects.get_or_create(user=request.user, good=selected_good, defaults={'count':0})
             
             # Update the count for the UserGoodRelation
             # i encountered an integrity error for the count field
-            if is_created:
-                user_good_relation.count = count
-            else:
-                user_good_relation.count += count
+        if is_created:
+            user_good_relation.count = (count)
+        else:
+            user_good_relation.count += (count)
             
-            user_good_relation.save()
+        user_good_relation.save()
             
             # Redirect to the add goods page or any other page you prefer
-            return redirect('add_goods')
+        return redirect('add_goods')
     
-    else:
-        form = AddGoodsForm()
-    all_goods = UserGoodRelation.objects.all()
+    # else:
+        # form = AddGoodsForm()
+    all_goods = Good.objects.all()
     user_goods = UserGoodRelation.objects.filter(user=request.user)
-    return render(request, 'add_goods.html', {'form': form, 'user_goods': user_goods, 'all_goods':all_goods})
+    return render(request, 'add_goods.html', { 'user_goods': user_goods, 'all_goods':all_goods})
 
 
 

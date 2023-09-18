@@ -5,15 +5,15 @@
     <title>Add Goods</title>
 </head>
 <body>
-    <h2>Add Goods</h2>
     <form method="post" action="{% url 'add_goods' %}">
         {% csrf_token %}
+        <h3>Add Goods</h3>   
         <label for="good">Select a Good:</label>
         <select id="good" name="good" required>
             <option value="" disabled selected>Select a good</option>
             {% comment %} getting a list of all the goods available {% endcomment %}
             {% for good in all_goods %}
-                <option value="{{ good.id }}">{{ good.good.name }} - Price: ${{ good.good.price }}</option>
+                <option value='{{good.id}}' >{{ good.name }} - Price: ${{ good.price }}</option>
             {% endfor %}
         </select>
         <br>
